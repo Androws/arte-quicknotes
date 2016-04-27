@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/QuickNotes.iml" filepath="$PROJECT_DIR$/QuickNotes.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arte-quicknotes.iml" filepath="$PROJECT_DIR$/arte-quicknotes.iml" />
     </modules>
   </component>
 </project>
