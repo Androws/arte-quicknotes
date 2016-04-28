@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="probando_android">Hola Mundo</string>
+    <string name="note.title">Título</string>
+    <string name="note.content">Contenido</string>
+    <string name="menu.save">Guardar</string>
+    <string name="menu.delete">Borrar</string>
+</resources>

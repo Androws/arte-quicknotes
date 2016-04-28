@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,14 +13,29 @@ import android.view.View;
 import com.arte.quicknotes.NoteListMock;
 import com.arte.quicknotes.R;
 import com.arte.quicknotes.adapters.NotesAdapter;
+import com.arte.quicknotes.models.Note;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NotesAdapter.Events {
+
+    private NotesAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupActivity();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //mensaje flotante
+        //Toast.makeText(this, "Acaba de resumirse la actividad", Toast.LENGTH_SHORT).show();
     }
 
     private void setupActivity() {
@@ -35,17 +49,34 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, NoteActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 0);
                 }
             });
         }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.notes_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        NotesAdapter adapter = new NotesAdapter(NoteListMock.getList());
+        mAdapter = new NotesAdapter(NoteListMock.getList(), this);
 
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(mAdapter);
+        }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNoteClicked(Note note) {
+        Intent intent = new Intent(this, NoteActivity.class);
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(NoteActivity.PARAM_NOTE, note);
+        intent.putExtras(arguments);
+        startActivityForResult(intent, 0);
+    }
 }
