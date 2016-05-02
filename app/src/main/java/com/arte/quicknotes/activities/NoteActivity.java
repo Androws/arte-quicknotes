@@ -3,7 +3,6 @@ package com.arte.quicknotes.activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -44,13 +43,10 @@ public class NoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                Log.d("test", "guardar");
-                Log.d("jsofdj", "idhfidhf");
                 saveNote();
                 return true;
             case R.id.action_delete:
-                Log.d("test", "el case");
-                deleteaNote();
+                deleteNote();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -85,13 +81,8 @@ public class NoteActivity extends AppCompatActivity {
         finish();
     }
 
-    private void deleteaNote() {
-        if (mNote == null) {
-            Log.i(NoteActivity.class.getSimpleName(), "wtffffffffff man");
-
-        }
-        else {
-            Log.i(NoteActivity.class.getSimpleName(), "wtf man");
+    private void deleteNote() {
+        if (mNote != null) {
             NoteListMock.deleteNote(mNote);
         }
         finish();

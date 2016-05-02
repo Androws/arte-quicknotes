@@ -1,12 +1,14 @@
 package com.arte.quicknotes;
 
+import android.util.Log;
+
 import com.arte.quicknotes.models.Note;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Sergio on 27/4/16.
+ * Created by Sergio Rodriguez.
  */
 public class NoteListMock {
 
@@ -30,9 +32,9 @@ public class NoteListMock {
         noteList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Note note = new Note();
-            note.setTitle("Note #" + (i + 1));
+            note.setTitle("Note #" + nextId);
             note.setContent("sadjfiisjdfiaijsdfi sidfjisjdfijsidfjijsdif adsfasdfijsdifj aidsjfiasdfiasd isdjfijasidfj iajsdfijsaidfjia idsjfijaijdfiii aidjidjifj");
-            noteList.add(note);
+            addNote(note);
         }
     }
 
