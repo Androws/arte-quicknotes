@@ -1,7 +1,6 @@
 package com.arte.quicknotes.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import com.arte.quicknotes.models.Note;
 import java.util.List;
 
 /**
- * Created by Sergio on 27/4/16.
+ * Created by Sergio Rodriguez.
  */
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 

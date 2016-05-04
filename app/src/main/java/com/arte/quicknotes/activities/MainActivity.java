@@ -2,18 +2,23 @@ package com.arte.quicknotes.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.arte.quicknotes.NoteListMock;
+import com.arte.quicknotes.NotesDataSource;
 import com.arte.quicknotes.R;
 import com.arte.quicknotes.adapters.NotesAdapter;
 import com.arte.quicknotes.models.Note;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements NotesAdapter.Events {
 
@@ -57,6 +62,15 @@ public class MainActivity extends AppCompatActivity implements NotesAdapter.Even
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.notes_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mAdapter = new NotesAdapter(NoteListMock.getList(), this);
+
+        NotesDataSource test = new NotesDataSource(this);
+        Cursor c = test.getAllNotes();
+
+        if(c != null) {
+            while(c.moveToNext()) {
+                Log.i("cursor", "" + c.getLong(0));
+            }
+        }
 
         if (recyclerView != null) {
             recyclerView.setLayoutManager(linearLayoutManager);
