@@ -18,10 +18,12 @@ public class NoteActivity extends AppCompatActivity {
     private EditText mTitle;
     private EditText mContent;
     private Note mNote;
+    private NotesDataSource mSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSource = new NotesDataSource(this);
         setContentView(R.layout.activity_note);
         setupActivity();
         loadNote();
@@ -72,21 +74,18 @@ public class NoteActivity extends AppCompatActivity {
             Note note = new Note();
             note.setTitle(title);
             note.setContent(content);
-            //NoteListMock.addNote(note);
-            NotesDataSource.createNote(title, content);
+            mSource.createNote(title, content);
         } else {
             mNote.setTitle(title);
             mNote.setContent(content);
-            //NoteListMock.updateNote(mNote);
-            NotesDataSource.updateNote(mNote.getId(), title, content);
+            mSource.updateNote(mNote.getId(), title, content);
         }
         finish();
     }
 
     private void deleteNote() {
         if (mNote != null) {
-            //NoteListMock.deleteNote(mNote);
-            NotesDataSource.deleteNote(mNote);
+            mSource.deleteNote(mNote);
         }
         finish();
     }

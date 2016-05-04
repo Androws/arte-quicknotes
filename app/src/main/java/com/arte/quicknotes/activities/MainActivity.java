@@ -9,20 +9,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
-import com.arte.quicknotes.NoteListMock;
 import com.arte.quicknotes.NotesDataSource;
 import com.arte.quicknotes.R;
 import com.arte.quicknotes.adapters.NotesAdapter;
 import com.arte.quicknotes.models.Note;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NotesAdapter.Events {
 
     private NotesAdapter mAdapter;
+    private List<Note> mNoteListDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +61,9 @@ public class MainActivity extends AppCompatActivity implements NotesAdapter.Even
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.notes_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mAdapter = new NotesAdapter(NoteListMock.getList(), this);
 
-        NotesDataSource test = new NotesDataSource(this);
-        Cursor c = test.getAllNotes();
-
-        if(c != null) {
-            while(c.moveToNext()) {
-                Log.i("cursor", "" + c.getLong(0));
-            }
-        }
+        mNoteListDB = new ArrayList<>(getDBContent());
+        mAdapter = new NotesAdapter(mNoteListDB, this);
 
         if (recyclerView != null) {
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -81,7 +74,8 @@ public class MainActivity extends AppCompatActivity implements NotesAdapter.Even
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        mNoteListDB.clear();
+        mNoteListDB.addAll(getDBContent());
         mAdapter.notifyDataSetChanged();
     }
 
@@ -92,5 +86,21 @@ public class MainActivity extends AppCompatActivity implements NotesAdapter.Even
         arguments.putSerializable(NoteActivity.PARAM_NOTE, note);
         intent.putExtras(arguments);
         startActivityForResult(intent, 0);
+    }
+
+    private List<Note> getDBContent() {
+        NotesDataSource mDataSource = new NotesDataSource(this);
+        Cursor c = mDataSource.getAllNotes();
+        List<Note> noteListDB = new ArrayList<>();
+        if(c != null) {
+            while(c.moveToNext()) {
+                Note noteDB = new Note();
+                noteDB.setId((int) c.getLong(0));
+                noteDB.setTitle(c.getString(1));
+                noteDB.setContent(c.getString(2));
+                noteListDB.add(noteDB);
+            }
+        }
+        return noteListDB;
     }
 }
